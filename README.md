@@ -1,5 +1,5 @@
 # What this is.
-This is a library I created to use python to control Govee Home lights. I would not have been able to make this without [this](https://github.com/egold555/Govee-H6113-Reverse-Engineering) insight into the packet format Govee uses. You can use this library with minimal technical knowledge of bluetooth.
+This is a library I modified from [ddxtanx](https://github.com/ddxtanx/GoveeAPI), for more useful http integration which was created to use python to control Govee Home lights. I would not have been able to make this without [this](https://github.com/egold555/Govee-H6113-Reverse-Engineering) and my own reverse engineering of the [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) to get the packet format Govee uses. You can use this library with minimal technical knowledge of bluetooth.
 
 # Requirements
 This should be done on a Raspberry Pi in whatever room your lights are in. This unfortunately will not work on a Mac/PC (unless you can install [gattlib](https://github.com/labapart/gattlib) on it).
@@ -11,12 +11,22 @@ For the python requirements, just run
 and you'll have all the required components.
 
 # Recommended Components
-I would recommend using a tool called IFTTT, which you can use to create custom workflows with Google Home, Amazon Alexa, etc. If you just want to use the python library without the Smart Home connection & wakeup functionality, you can delete `server.py` and just run through all the files and add in whatever is relevant to you. If you want to integrate this into a smart home, make sure you have a Google Home/Amazon Alexa/some smart assistant that works with IFTTT.
+I would recommend using homeassistant shell_command API and gatttool or a tool called IFTTT, which you can use to create custom workflows with Google Home, Amazon Alexa, etc. If you just want to use the python library without the Smart Home connection & wakeup functionality, you can delete `server.py` and just run through all the files and add in whatever is relevant to you. If you want to integrate this into a smart home, make sure you have a Google Home/Amazon Alexa/some smart assistant that works with IFTTT or gatttool installed.
 
 Also, this is best installed onto a Raspberry Pi, as I said above, both because it is very low profile and because it has gatttool pre-installed. They're also quite cheap and easy to set up!
 
 # Integrating this into a Smart Home
-More likely than not, you will first need to expose your pi (or whatever device you want to control the Govee lights) to the internet. While there isn't one guide for every single router, you need to log onto your router and find some setting along the lines of "NAT Forwarding." There should be options to add either rules or devices, and click that option.
+I prefer to run gatttool directly from Home Assistant and the bluetooth coommand because it comes installed in Raspberry pi.
+To integrate, set up shell_commands:
+
+`shell_command:
+    leds_on: gatttool -i hci0 -b <mac> --char-write-req -a 0x0015 -n 3301010000000000000000000000000000000033`
+or
+`    leds_on: curl http://server_ip:Port/<command>?key=""`
+
+***see [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) for list of gatttool commands
+
+You can also expose your pi (or whatever device you want to control the Govee lights) to the internet and control with http. While there isn't one guide for every single router, you need to log onto your router and find some setting along the lines of "NAT Forwarding." There should be options to add either rules or devices, and click that option.
 The external port is the port that gets exposed to the internet, the IP address should be the IP address of the device controlling the Govee lights and the internal port is the port you choose to set the server up on, on the device.
 
 Also, make sure you know your public IP address (which you can find out by Googling "whats my ip address").
@@ -28,15 +38,8 @@ Then, just go through each of controller.py, tool.py, and server.py and fill in 
 ## Using IFTTT with Google Home/Amazon Alexa
 Once you've installed IFTTT and made an account, create a new applet. The "If" part should be either from Google Assistant or Amazon Alexa depending on what smart device you have, so search it in the toolbar and connect the service. You can choose to have whatever voice command trigger the service, it's up to you! Make sure you use a "$" if you want to arguments in your command like "Wake me up at $" to wake you up at whatever time "$" becomes.
 
-Then the "then that" part should be a webhooks service. The URL should be your public ip with port formatted like "http://URL:PORT" with one of "/alarm" "/strobe" "/end_strobe" or a custom endpoint you put in server.py.
-
-"/alarm" uses POST requests, so set the request type to "POST" and body to "alarm=[TextField]&key=[Whatever your server key was]". The textfield ingredient can be added by clicking the "Add Ingredient" button at the top-left of the keyboard.
-
-"/strobe" and "/end_strobe" use GET requests, so set the request type to that. Instead of placing the key in the body, place it in the URL after the endpoint like so "http://URL:PORT/endpoint?key=[Whatever your server key was.]"
+Then the "then that" part should be a webhooks service. The URL should be your public ip with port formatted like "http://URL:PORT/<command>?key=''" with one of "/on" "/off" "/red" or a custom endpoint you put in server.py.
 
 If you add other endpoints to server.py, add them to IFTTT and you'll be all good!
 
 Then, to start up the server, just run `nohup python3 server.py > server_log 2>&1 &` to start up the webserver in the background, and enjoy the control you now posses over your Govee devices!
-
-# Random advice, from my experiences
-I've been using this basically every day to help me wakeup using the wakeup feature. I've found that sometimes the bluetooth controller just stops connecting after a couple of days of uptime. To combat this, I basically just setup a cronjob to restart my pi at 1AM every day, as well as on every reboot starting up the webserver. Since doing thos, I haven't experienced any connection failures. If they do continue, however, I'll try and examine more about why it's happening and commit a fix for it.
