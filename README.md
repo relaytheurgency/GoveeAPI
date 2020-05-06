@@ -19,12 +19,12 @@ Also, this is best installed onto a Raspberry Pi, as I said above, both because 
 I prefer to run gatttool directly from Home Assistant and the bluetooth coommand because it comes installed in Raspberry pi.
 To integrate, set up shell_commands:
 
-`shell_command:'
-'    leds_on: gatttool -i hci0 -b <mac> --char-write-req -a 0x0015 -n 3301010000000000000000000000000000000033`
+`shell_command:`
+`    leds_on: gatttool -i hci0 -b <mac> --char-write-req -a 0x0015 -n 3301010000000000000000000000000000000033`
 or
 `    leds_on: curl http://server_ip:Port/<command>?key=""`
 
-***see [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) for list of gatttool commands***
+**see [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) for list of gatttool commands**
 
 You can also expose your pi (or whatever device you want to control the Govee lights) to the internet and control with http. While there isn't one guide for every single router, you need to log onto your router and find some setting along the lines of "NAT Forwarding." There should be options to add either rules or devices, and click that option.
 The external port is the port that gets exposed to the internet, the IP address should be the IP address of the device controlling the Govee lights and the internal port is the port you choose to set the server up on, on the device.
