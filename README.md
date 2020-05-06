@@ -44,31 +44,30 @@ If you add other endpoints to server.py, add them to IFTTT and you'll be all goo
 
 Then, to start up the server, just run `nohup python3 server.py > server_log 2>&1 &` to start up the webserver in the background, and enjoy the control you now posses over your Govee devices!
 
-## How to use and built in tool
+## How to use server.py and tool.py
 Ive built in some standard use cases for the python server including
-'''
-/on?key=""
-/off?key=""
-/red?key=""
-/green?key=""
-/blue?key=""
-/energic?key=""
-'''
+Once the server is up and running the bluetooth device can be controlled by visiting 
+`/on?key=""`
+`/off?key=""`
+`/red?key=""`
+`/green?key=""`
+`/blue?key=""`
+`/energic?key=""`
+
 
 Custom colors can be controlled with
-'''
-/color/<r>/<g></<b>?key=""
-'''
+`/color/<r>/<g></<b>?key=""`
 
 for example red would be
+`/color/255/0/0/?key=""`
 
-'''
-/color/255/0/0/?key=""
-'''
 Brightness:
-/brightness/<%brightness>?key=""
+`/brightness/<%brightness>?key=""`
 Scenes:
-'''
-/scenes/<scene>?key=""
+`/scenes/<scene>?key=""`
+
 Music Mode:
-/music/<mode>/<r>/<g>/<b>?key=""
+`/music/<mode>/<r>/<g>/<b>?key=""`
+
+to use tool.py alone, run 
+`python3 tool.py --help`
