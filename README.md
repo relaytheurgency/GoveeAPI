@@ -19,12 +19,12 @@ Also, this is best installed onto a Raspberry Pi, as I said above, both because 
 I prefer to run gatttool directly from Home Assistant and the bluetooth coommand because it comes installed in Raspberry pi.
 To integrate, set up shell_commands:
 
-`shell_command:`
-`    leds_on: gatttool -i hci0 -b <mac> --char-write-req -a 0x0015 -n 3301010000000000000000000000000000000033`
-or
-`    leds_on: curl http://server_ip:Port/<command>?key=""`
+    shell_command:
+        leds_on: gatttool -i hci0 -b <mac> --char-write-req -a 0x0015 -n 3301010000000000000000000000000000000033
+    or
+        leds_on: curl http://server_ip:Port/<command>?key=""`
 
-**see [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) for list of gatttool commands**
+***See [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) for list of gatttool commands***
 
 You can also expose your pi (or whatever device you want to control the Govee lights) to the internet and control with http. While there isn't one guide for every single router, you need to log onto your router and find some setting along the lines of "NAT Forwarding." There should be options to add either rules or devices, and click that option.
 The external port is the port that gets exposed to the internet, the IP address should be the IP address of the device controlling the Govee lights and the internal port is the port you choose to set the server up on, on the device.
@@ -47,27 +47,35 @@ Then, to start up the server, just run `nohup python3 server.py > server_log 2>&
 ## How to use server.py and tool.py
 Ive built in some standard use cases for the python server including
 Once the server is up and running the bluetooth device can be controlled by visiting 
-`/on?key=""`
-`/off?key=""`
-`/red?key=""`
-`/green?key=""`
-`/blue?key=""`
-`/energic?key=""`
+    
+    /on?key=""
+    /off?key=""
+    /red?key=""
+    /green?key=""
+    /blue?key=""
+    /energic?key=""
 
 
-Custom colors can be controlled with
-`/color/<r>/<g></<b>?key=""`
+Custom colors can be controlled with:  0-255
+    
+    /color/<r>/<g></<b>?key=""
 
 for example red would be
-`/color/255/0/0/?key=""`
 
-Brightness:
-`/brightness/<%brightness>?key=""`
-Scenes:
-`/scenes/<scene>?key=""`
+    /color/255/0/0/?key=""
 
-Music Mode:
-`/music/<mode>/<r>/<g>/<b>?key=""`
+Brightness:  0-100
 
-to use tool.py alone, run 
-`python3 tool.py --help`
+    /brightness/<brightness%>?key=""
+
+Scenes:  `Sunrise`, `Sunset`, `Movie`, `Dating`, `Romantic`, `Blinking`, `Candlelight`, `Snowflake`
+    
+    /scenes/<scene>?key=""
+
+Music Mode:  `Energic`, `Spectrum`, `Rolling`, `Rhythm`
+
+    /music/<mode>/<r>/<g>/<b>?key=""
+
+To use tool.py alone, run 
+    
+    python3 tool.py --help
