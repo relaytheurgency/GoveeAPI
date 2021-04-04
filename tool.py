@@ -10,8 +10,7 @@ from constants import *
     of multiple devices, enter them all into the list.
     Include 'all' as a list of all of your device addresses as well.
 """
-name_addr_dict = {"led":"00:11:22:33:44:55"
-}
+name_addr_dict = devices
 
 ps = argparse.ArgumentParser(description="Govee Home Control Script")
 device_choices = device_names.append("all")
