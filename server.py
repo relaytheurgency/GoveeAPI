@@ -14,11 +14,7 @@ os.chdir("/home/pi/GoveeAPI")
 def keepalive_loop():
     while True:
         time.sleep(2.0)
-        console.sendline("python3 tool.py --keepalive on")
-
-t_keepalive = threading.Thread(target=keepalive_loop)
-t_keepalive.setName("keepalivethread")
-t_keepalive.start()
+        os.system("python3 tool.py --keepalive on")
 
 app = Flask(__name__)
 
@@ -28,7 +24,7 @@ console = pexpect.spawn("bash")
 def on():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --mode on")
+        os.system("python3 tool.py --mode on")
         return "done"
     else:
         return "Empty request"
@@ -37,7 +33,7 @@ def on():
 def off():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --mode off")
+        os.system("python3 tool.py --mode off")
         return "done"
     else:
         return "Empty request"
@@ -46,7 +42,7 @@ def off():
 def bright(bright):
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --brightness " + bright)
+        os.system("python3 tool.py --brightness " + bright)
         return "done"
     else:
         return "Empty request"
@@ -63,7 +59,7 @@ def alarm():
             time_str = correct_ampm_alarm + " tomorrow" if is_day_before else correct_ampm_alarm
             command_str = f"at {time_str} -f ./start_bright_increase.sh"
             print(command_str)
-            console.sendline(command_str)
+            os.system(command_str)
             return "done"
         else:
             return "Bad request"
@@ -74,7 +70,7 @@ def alarm():
 def strobe():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --mode strobe --period .3")
+        os.system("python3 tool.py --mode strobe --period .3")
         return "done"
     else:
         return "Bad request"
@@ -85,7 +81,7 @@ def strobe():
 def red():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --color 255 0 0")
+        os.system("python3 tool.py --color 255 0 0")
         return "done"
     else:
         return "Empty request"
@@ -95,7 +91,7 @@ def red():
 def green():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --color 0 255 0")
+        os.system("python3 tool.py --color 0 255 0")
         return "done"
     else:
         return "Empty request"
@@ -105,7 +101,7 @@ def green():
 def blue():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --color 0 0 255")
+        os.system("python3 tool.py --color 0 0 255")
         return "done"
     else:
         return "Empty request"
@@ -115,7 +111,7 @@ def blue():
 def energic():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --music Energic --color 0 0 0")
+        os.system("python3 tool.py --music Energic --color 0 0 0")
         return "done"
     else:
         return "Empty request"
@@ -125,7 +121,7 @@ def energic():
 def color(r,g,b):
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --color " + r + " " + g + " " + b)
+        os.system("python3 tool.py --color " + r + " " + g + " " + b)
         return "done"
     else:
         return "Empty request"
@@ -135,7 +131,7 @@ def color(r,g,b):
 def music(music_mode,r,g,b):
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --music " + music_mode + " --color " + r + " " + g + " " + b)
+        os.system("python3 tool.py --music " + music_mode + " --color " + r + " " + g + " " + b)
         return "done"
     else:
         return "Empty request"
@@ -145,7 +141,7 @@ def music(music_mode,r,g,b):
 def scene(scene_mode):
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
-        console.sendline("python3 tool.py --scene " + scene_mode.capitalize()  )
+        os.system("python3 tool.py --scene " + scene_mode.capitalize()  )
         return "done"
     else:
         return "Empty request"
@@ -161,4 +157,8 @@ def end():
 
 
 if __name__ == '__main__':
+    t_keepalive = threading.Thread(target=keepalive_loop)
+    t_keepalive.setName("keepalivethread")
+    t_keepalive.start()
+
     app.run(host='0.0.0.0', port=server_port)
