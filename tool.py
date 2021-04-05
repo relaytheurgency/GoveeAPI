@@ -21,6 +21,7 @@ ps.add_argument('--color', nargs=3, type=int)
 ps.add_argument('--period', type=float)
 ps.add_argument('--music', type=str, choices=music_modes)
 ps.add_argument('--scene',type=str,choices=scene_modes)
+ps.add_argument('--keepalive', default="on", type=str)
 args = ps.parse_args()
 chosen_devices = [name_addr_dict[args.device]]
 
@@ -49,6 +50,9 @@ elif args.mode == "on":
 elif args.mode == "off":
     for device in chosen_devices:
         turn_off(device) 
+elif args.mode == "keepalive":
+    for device in chosen_devlices:
+        send_keepalive(device)
 elif args.mode == "strobe":
     latency = args.period
     change_brightness_both(255)

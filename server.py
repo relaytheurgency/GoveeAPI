@@ -1,5 +1,6 @@
 from flask import Flask, request
 import time
+import threading
 import pexpect
 import os
 import sys
@@ -8,6 +9,16 @@ from constants import server_secret, server_port
 # added this to start server in cron
 # since paths aren't absolute
 os.chdir("/home/pi/GoveeAPI")
+
+# Adding a keeaplive thread so that commands fail less
+def keepalive_loop():
+    while True:
+        time.sleep(2.0)
+        console.sendline("python3 tool.py --keepalive 1")
+
+t_keepalive = threading.Thread(target=keepalive_loop)
+t_keepalive.setName("keepalivethread")
+t_keepalive.start()
 
 app = Flask(__name__)
 

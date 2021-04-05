@@ -85,11 +85,14 @@ def write_data(data, addr):
         print(f"Failed to connect to {dev} {addr}")
         return
 
-    #gatt.sendline(f"char-write-req {handle_hex} {keepalive}")
     gatt.sendline(f"char-write-req {handle_hex} {data}")
     gatt.expect(".*")
     gatt.sendline("disconnect")
     gatt.expect(".*")
+def send_keepalive(addr):
+    hexstr = keepalive
+    write_data(hexstr,addr)
+    print(f"Sent keepalive to {addr_dev_dict[addr]}")
 def turn_on(addr):
     hexstr = get_on()
     write_data(hexstr,addr)
