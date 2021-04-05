@@ -51,7 +51,7 @@ elif args.mode == "off":
     for device in chosen_devices:
         turn_off(device) 
 elif args.mode == "keepalive":
-    for device in chosen_devlices:
+    for device in chosen_devices:
         send_keepalive(device)
 elif args.mode == "strobe":
     latency = args.period

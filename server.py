@@ -14,7 +14,7 @@ os.chdir("/home/pi/GoveeAPI")
 def keepalive_loop():
     while True:
         time.sleep(2.0)
-        console.sendline("python3 tool.py --keepalive 1")
+        console.sendline("python3 tool.py --keepalive on")
 
 t_keepalive = threading.Thread(target=keepalive_loop)
 t_keepalive.setName("keepalivethread")
