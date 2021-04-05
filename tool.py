@@ -44,15 +44,15 @@ if args.mode == "set":
         scene = args.scene
         for device in chosen_devices:
             change_scene(scene,device)
+    if args.keepalive is not None:
+        for device in chosen_devices:
+            send_keepalive(device)
 elif args.mode == "on":
     for device in chosen_devices:
         turn_on(device)
 elif args.mode == "off":
     for device in chosen_devices:
         turn_off(device) 
-elif args.mode == "keepalive":
-    for device in chosen_devices:
-        send_keepalive(device)
 elif args.mode == "strobe":
     latency = args.period
     change_brightness_both(255)
