@@ -23,7 +23,11 @@ ps.add_argument('--music', type=str, choices=music_modes)
 ps.add_argument('--scene',type=str,choices=scene_modes)
 ps.add_argument('--keepalive', default="on", type=str)
 args = ps.parse_args()
-chosen_devices = [name_addr_dict[args.device]]
+
+if args.device == "all":
+    chosen_devices = list(name_addr_dict.values())
+else:
+    chosen_devices = [name_addr_dict[args.device]]
 
 if args.mode == "set":
     device = "led" ## can remove if more than one device added for simplicity

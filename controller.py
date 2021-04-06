@@ -85,6 +85,7 @@ def write_data(data, addr):
         print(f"Failed to connect to {dev} {addr}")
         return
 
+    gatt.sendline(f"char-write-req {handle_hex} {keepalive}")
     gatt.sendline(f"char-write-req {handle_hex} {data}")
     gatt.expect(".*")
     gatt.sendline("disconnect")

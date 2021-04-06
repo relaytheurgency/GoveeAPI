@@ -4,7 +4,7 @@ import threading
 import pexpect
 import os
 import sys
-from constants import server_secret, server_port
+from constants import server_secret, server_port, devices
 
 # added this to start server in cron
 # since paths aren't absolute
@@ -13,7 +13,7 @@ os.chdir("/home/pi/GoveeAPI")
 # Adding a keeaplive thread so that commands fail less
 def keepalive_loop():
     while True:
-        time.sleep(2.0)
+        time.sleep(30.0)
         os.system("python3 tool.py --keepalive on")
 
 app = Flask(__name__)
@@ -34,6 +34,34 @@ def off():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
         os.system("python3 tool.py --mode off")
+        return "done"
+    else:
+        return "Empty request"
+#devices
+@app.route('/device_list', methods=["GET"])
+def device_list():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        return devices
+    else:
+        return "Empty request"
+#device on
+@app.route('/device/<dev>/on', methods=["GET"])
+def dev_on(dev):
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        command_str = f"python3 tool.py --device {dev} --mode on"
+        os.system(command_str)
+        return "done"
+    else:
+        return "Empty request"
+#device off
+@app.route('/device/<dev>/off', methods=["GET"])
+def dev_off(dev):
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        command_str = f"python3 tool.py --device {dev} --mode off"
+        os.system(command_str)
         return "done"
     else:
         return "Empty request"
@@ -102,6 +130,166 @@ def blue():
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret:
         os.system("python3 tool.py --color 0 0 255")
+        return "done"
+    else:
+        return "Empty request"
+
+#crimson
+@app.route('/crimson', methods=["GET"])
+def crimson():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 220 20 60")
+        return "done"
+    else:
+        return "Empty request"
+
+#cyan
+@app.route('/cyan', methods=["GET"])
+def cyan():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 0 255 255")
+        return "done"
+    else:
+        return "Empty request"
+
+#fuchsia
+@app.route('/fuchsia', methods=["GET"])
+def fuchsia():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 255 0 255")
+        return "done"
+    else:
+        return "Empty request"
+
+#gold
+@app.route('/gold', methods=["GET"])
+def gold():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 255 215 0")
+        return "done"
+    else:
+        return "Empty request"
+
+#lavender
+@app.route('/lavender', methods=["GET"])
+def lavender():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 230 230 250")
+        return "done"
+    else:
+        return "Empty request"
+
+#lime
+@app.route('/lime', methods=["GET"])
+def lime():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 50 205 50")
+        return "done"
+    else:
+        return "Empty request"
+
+#magenta
+@app.route('/magenta', methods=["GET"])
+def magenta():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 139 0 139")
+        return "done"
+    else:
+        return "Empty request"
+
+#orange
+@app.route('/orange', methods=["GET"])
+def orange():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 255 165 0")
+        return "done"
+    else:
+        return "Empty request"
+
+#pink
+@app.route('/pink', methods=["GET"])
+def pink():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 255 192 203")
+        return "done"
+    else:
+        return "Empty request"
+
+#purple
+@app.route('/purple', methods=["GET"])
+def purple():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 128 0 128")
+        return "done"
+    else:
+        return "Empty request"
+
+#salmon
+@app.route('/salmon', methods=["GET"])
+def salmon():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 250 128 114")
+        return "done"
+    else:
+        return "Empty request"
+
+#sky
+@app.route('/sky', methods=["GET"])
+def sky():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 135 206 235")
+        return "done"
+    else:
+        return "Empty request"
+
+#teal
+@app.route('/teal', methods=["GET"])
+def teal():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 0 128 128")
+        return "done"
+    else:
+        return "Empty request"
+
+#turquoise
+@app.route('/turquoise', methods=["GET"])
+def turquoise():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 64 224 208")
+        return "done"
+    else:
+        return "Empty request"
+
+#violet
+@app.route('/violet', methods=["GET"])
+def violet():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 238 130 238")
+        return "done"
+    else:
+        return "Empty request"
+
+#yellow
+@app.route('/yellow', methods=["GET"])
+def yellow():
+    args_dict = request.args.to_dict()
+    if "key" in args_dict.keys() and args_dict["key"] == server_secret:
+        os.system("python3 tool.py --color 255 255 0")
         return "done"
     else:
         return "Empty request"
