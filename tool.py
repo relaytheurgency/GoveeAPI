@@ -15,7 +15,7 @@ name_addr_dict = devices
 ps = argparse.ArgumentParser(description="Govee Home Control Script")
 device_choices = device_names.append("all")
 ps.add_argument('--mode', default="set", type=str, choices=device_modes)
-ps.add_argument('--device', default="led", type=str, choices=device_choices)
+ps.add_argument('--device', default="all", type=str, choices=device_choices)
 ps.add_argument('--brightness', type=int)
 ps.add_argument('--color', nargs=3, type=int)
 ps.add_argument('--period', type=float)
