@@ -1,5 +1,7 @@
 # What this is.
-This is a library I modified from [ddxtanx](https://github.com/ddxtanx/GoveeAPI), for more useful http integration which was created to use python to control Govee Home lights. I would not have been able to make this without [this](https://github.com/egold555/Govee-H6113-Reverse-Engineering) and my own reverse engineering of the [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) to get the packet format Govee uses. You can use this library with minimal technical knowledge of bluetooth.
+This is a library originally modified from [ddxtanx](https://github.com/ddxtanx/GoveeAPI), and forked from [BeauJBurroughs](https://github.com/ddxtanx/GoveeAPI) for more useful http integration which was created to use python to control Govee Home lights. I would not have been able to make this without [BeauJBurroughs](https://github.com/BeauJBurroughs) reverse engineering of the [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) to get the packet format Govee uses. You can use this library with minimal technical knowledge of bluetooth.
+
+I have verified that it works with the H6001 and the H6125.
 
 # Requirements
 This should be done on a Raspberry Pi in whatever room your lights are in. This unfortunately will not work on a Mac/PC (unless you can install [gattlib](https://github.com/labapart/gattlib) on it).
@@ -22,7 +24,7 @@ To integrate, set up shell_commands:
     shell_command:
         leds_on: gatttool -i hci0 -b <mac> --char-write-req -a 0x0015 -n 3301010000000000000000000000000000000033
     or
-        leds_on: curl http://server_ip:Port/<command>?key=""`
+        leds_on: curl http://server_ip:port/device/<dev>/<command>?key=""`
 
 ***See [H6127](https://github.com/BeauJBurroughs/Govee-H6127-Reverse-Engineering) for list of gatttool commands***
 
@@ -48,29 +50,30 @@ Then, to start up the server, just run `nohup python3 server.py > server_log 2>&
 Ive built in some standard use cases for the python server including
 Once the server is up and running the bluetooth device can be controlled by visiting 
     
-    /on?key=""
-    /off?key=""
-    /red?key=""
-    /green?key=""
-    /blue?key=""
-    /energic?key=""
+    /device_list?key=""
+    /device/<dev>/on?key=""
+    /device/<dev>/off?key=""
+    /device/<dev>/red?key=""
+    /device/<dev>/green?key=""
+    /device/<dev>/blue?key=""
+    /device/<dev>/energic?key=""
 
 
 Custom colors can be controlled with:  0-255
     
-    /color/<r>/<g></<b>?key=""
+    /device/<dev>/color/<r>/<g></<b>?key=""
 
 for example red would be
 
-    /color/255/0/0/?key=""
+    /device/<dev>/color/255/0/0/?key=""
 
 Brightness:  0-100
 
-    /brightness/<brightness%>?key=""
+    /device/<dev>/brightness/<brightness%>?key=""
 
 Scenes:  `Sunrise`, `Sunset`, `Movie`, `Dating`, `Romantic`, `Blinking`, `Candlelight`, `Snowflake`
     
-    /scenes/<scene>?key=""
+    /device/<dev>/scene/<scene>?key=""
 
 Music Mode:  `Energic`, `Spectrum`, `Rolling`, `Rhythm`
 
