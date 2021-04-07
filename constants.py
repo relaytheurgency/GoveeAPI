@@ -15,8 +15,8 @@ server_secret = ""
 server_port = 5000
 color_dict = {
         "red": "255 0 0",
-        "blue": "0 255 0",
-        "green": "0 0 255",
+        "green": "0 255 0",
+        "blue": "0 0 255",
         "crimson": "220 20 60",
         "cyan": "0 255 255",
         "fuchsia": "255 0 255",

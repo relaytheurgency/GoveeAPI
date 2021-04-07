@@ -5,12 +5,6 @@ import signal
 import sys
 from constants import *
 
-gatt = pexpect.spawn('gatttool -I')
-def exit_gracefully(sig, other):
-    gatt.sendline("disconnect")
-    gatt.sendline("quit")
-    sys.exit(1)
-signal.signal(signal.SIGINT, exit_gracefully)
 def int_to_hex(intv):
     h = hex(intv).replace("0x", "")
     while len(h) < 2:
@@ -77,24 +71,25 @@ def get_scene(scene):
     return "".join(bins_str)
 
 def write_data(data, addr):
-    gatt.sendline(f"connect {addr}")
-    for attempt in range(5):
+    dev = addr_dev_dict[addr]
+    command_str = f"gatttool -i hci0 -b {addr} --char-write-req -a {handle_hex} -n {data}"
+    for attempt in range(10):
         try:
-            gatt.expect("Connection successful", timeout=5)
+            gatt = pexpect.spawn(command_str)
+            gatt.expect("Characteristic value was written successfully", timeout=2)
         except pexpect.exceptions.TIMEOUT:
-            dev = addr_dev_dict[addr]
             print(f"Failed to connect to {dev} {addr}")
-            gatt.sendline(f"connect {addr}")
+            continue
+        except pexpect.exceptions.EOF:
+            # these happen sometimes during a keepalive
+            # just retry until it's figured out.
+            continue
         else:
             break
     else:
+        dev = addr_dev_dict[addr]
         print(f"Failed all attempts to connect to {dev} {addr}")
 
-    gatt.sendline(f"char-write-req {handle_hex} {keepalive}")
-    gatt.sendline(f"char-write-req {handle_hex} {data}")
-    gatt.expect(".*")
-    gatt.sendline("disconnect")
-    gatt.expect(".*")
 def send_keepalive(addr):
     hexstr = keepalive
     write_data(hexstr,addr)
