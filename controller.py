@@ -78,12 +78,17 @@ def get_scene(scene):
 
 def write_data(data, addr):
     gatt.sendline(f"connect {addr}")
-    try:
-        gatt.expect("Connection successful", timeout=5)
-    except pexpect.exceptions.TIMEOUT:
-        dev = addr_dev_dict[addr]
-        print(f"Failed to connect to {dev} {addr}")
-        return
+    for attempt in range(5):
+        try:
+            gatt.expect("Connection successful", timeout=5)
+        except pexpect.exceptions.TIMEOUT:
+            dev = addr_dev_dict[addr]
+            print(f"Failed to connect to {dev} {addr}")
+            gatt.sendline(f"connect {addr}")
+        else:
+            break
+    else:
+        print(f"Failed all attempts to connect to {dev} {addr}")
 
     gatt.sendline(f"char-write-req {handle_hex} {keepalive}")
     gatt.sendline(f"char-write-req {handle_hex} {data}")
