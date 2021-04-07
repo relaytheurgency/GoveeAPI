@@ -53,19 +53,20 @@ Once the server is up and running the bluetooth device can be controlled by visi
     /device_list?key=""
     /device/<dev>/on?key=""
     /device/<dev>/off?key=""
-    /device/<dev>/red?key=""
-    /device/<dev>/green?key=""
-    /device/<dev>/blue?key=""
+    /device/<dev>/color/red?key=""
+    /device/<dev>/color/green?key=""
+    /device/<dev>/color/blue?key=""
+    /device/<dev>/color/fuchsia?key="" #see colors defined in constants.py
     /device/<dev>/energic?key=""
 
 
 Custom colors can be controlled with:  0-255
     
-    /device/<dev>/color/<r>/<g></<b>?key=""
+    /device/<dev>/rgb/<r>/<g></<b>?key=""
 
 for example red would be
 
-    /device/<dev>/color/255/0/0/?key=""
+    /device/<dev>/rgb/255/0/0/?key=""
 
 Brightness:  0-100
 

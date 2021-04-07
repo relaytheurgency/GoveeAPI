@@ -4,7 +4,7 @@ import threading
 import pexpect
 import os
 import sys
-from constants import server_secret, server_port, devices
+from constants import server_secret, server_port, devices, color_dict
 
 # added this to start server in cron
 # since paths aren't absolute
@@ -93,214 +93,17 @@ def strobe(dev):
         return "Bad request"
 #########################################################################################################################################################
 
-#red
-@app.route('/device/<dev>/red', methods=["GET"])
-def red(dev):
+#color
+@app.route('/device/<dev>/color/<color>', methods=["GET"])
+def color(dev, color):
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 255 0 0")
+        dev in device_keys and color in color_dict.keys():
+        os.system("python3 tool.py --device " + dev + \
+        " --color " + color_dict[color])
         return "done"
     else:
-        return "Empty request"
-
-#green
-@app.route('/device/<dev>/green', methods=["GET"])
-def green(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 0 255 0")
-        return "done"
-    else:
-        return "Empty request"
-
-#blue
-@app.route('/device/<dev>/blue', methods=["GET"])
-def blue(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 0 0 255")
-        return "done"
-    else:
-        return "Empty request"
-
-#crimson
-@app.route('/device/<dev>/crimson', methods=["GET"])
-def crimson(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 220 20 60")
-        return "done"
-    else:
-        return "Empty request"
-
-#cyan
-@app.route('/device/<dev>/cyan', methods=["GET"])
-def cyan(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 0 255 255")
-        return "done"
-    else:
-        return "Empty request"
-
-#fuchsia
-@app.route('/device/<dev>/fuchsia', methods=["GET"])
-def fuchsia(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 255 0 255")
-        return "done"
-    else:
-        return "Empty request"
-
-#gold
-@app.route('/device/<dev>/gold', methods=["GET"])
-def gold(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 255 215 0")
-        return "done"
-    else:
-        return "Empty request"
-
-#lavender
-@app.route('/device/<dev>/lavender', methods=["GET"])
-def lavender(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 230 230 250")
-        return "done"
-    else:
-        return "Empty request"
-
-#lime
-@app.route('/device/<dev>/lime', methods=["GET"])
-def lime(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 50 205 50")
-        return "done"
-    else:
-        return "Empty request"
-
-#magenta
-@app.route('/device/<dev>/magenta', methods=["GET"])
-def magenta(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 139 0 139")
-        return "done"
-    else:
-        return "Empty request"
-
-#orange
-@app.route('/device/<dev>/orange', methods=["GET"])
-def orange(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 255 165 0")
-        return "done"
-    else:
-        return "Empty request"
-
-#pink
-@app.route('/device/<dev>/pink', methods=["GET"])
-def pink(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 255 192 203")
-        return "done"
-    else:
-        return "Empty request"
-
-#purple
-@app.route('/device/<dev>/purple', methods=["GET"])
-def purple(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 128 0 128")
-        return "done"
-    else:
-        return "Empty request"
-
-#salmon
-@app.route('/device/<dev>/salmon', methods=["GET"])
-def salmon(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 250 128 114")
-        return "done"
-    else:
-        return "Empty request"
-
-#sky
-@app.route('/device/<dev>/sky', methods=["GET"])
-def sky(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 135 206 235")
-        return "done"
-    else:
-        return "Empty request"
-
-#teal
-@app.route('/device/<dev>/teal', methods=["GET"])
-def teal(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 0 128 128")
-        return "done"
-    else:
-        return "Empty request"
-
-#turquoise
-@app.route('/device/<dev>/turquoise', methods=["GET"])
-def turquoise(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 64 224 208")
-        return "done"
-    else:
-        return "Empty request"
-
-#violet
-@app.route('/device/<dev>/violet', methods=["GET"])
-def violet(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 238 130 238")
-        return "done"
-    else:
-        return "Empty request"
-
-#yellow
-@app.route('/device/<dev>/yellow', methods=["GET"])
-def yellow(dev):
-    args_dict = request.args.to_dict()
-    if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
-            dev in device_keys:
-        os.system("python3 tool.py --device " + dev + " --color 255 255 0")
-        return "done"
-    else:
-        return "Empty request"
+        return "Empty Request"
 
 #energic
 @app.route('/device/<dev>/energic', methods=["GET"])
@@ -313,9 +116,9 @@ def energic(dev):
     else:
         return "Empty request"
 #########################################################################################################################################################
-#color
-@app.route('/device/<dev>/color/<r>/<g>/<b>', methods=["GET"])
-def color(dev,r,g,b):
+#rgb
+@app.route('/device/<dev>/rgb/<r>/<g>/<b>', methods=["GET"])
+def rgb(dev,r,g,b):
     args_dict = request.args.to_dict()
     if "key" in args_dict.keys() and args_dict["key"] == server_secret and\
             dev in device_keys:
